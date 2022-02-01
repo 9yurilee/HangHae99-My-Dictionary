@@ -1,37 +1,61 @@
-import React, { useRef, useState } from "react"
+import React from "react"
 import { useDispatch } from "react-redux"
 import { useHistory } from "react-router-dom"
 import styled from "styled-components"
-import { createCard } from "./Store"
+import { createCardFB } from "./Store"
 
 const Add = () => {
   const history = useHistory();
-  const [list, setList] = React.useState('')
-
-  const [id, setId] = useState('')
-  const [word, setWord] = useState('');
-  const [announce, setAnnounce] = useState('');
-  const [meaning, setMeaning] = useState('');
-  const [ex, setEx] = useState('');
+  const dispatch = useDispatch();
 
   const wordInput = React.useRef('');
-  const announceInput = React.useRef('');
   const meaningInput = React.useRef('');
   const exInput = React.useRef('');
   console.log(wordInput)
 
   const addWord = () => {
-    dispatch(createCard({
-      id: 6,
-      word: wordInput.current.value,
-      announce: announceInput.current.value,
-      meaning: meaningInput.current.value,
-      example: exInput.current.value,
-    }));
+    dispatch(createCardFB({
+        word: wordInput.current.value,
+        meaning: meaningInput.current.value,
+        example: exInput.current.value,
+      }))
     history.push('/')
   }
 
-  const dispatch = useDispatch();
+  // db 연결 확인 콘솔
+  // promise로 넘어오는거 확인 방법 : async, await (= set!!)
+  // async ? 
+  // React.useEffect(() => {
+  //   dispatch(loadCardFB());
+
+    // 새로운 컬렉션에 추가
+    // addDoc(collection(db, "dicts"), {word: "newnew", isClicked: false});
+
+    //삭제하기
+    // const docRef = doc(db, "dict", "Ver6UFZhIf2U0LK8zjOd");
+    // deleteDoc(docRef);
+
+    //수정하기
+    // const docRef = doc(db, "dict", "HF36l88oFXadtIotEpqb");
+    // updateDoc(docRef, {isClicked: true});
+
+    //추가하기
+    // addDoc(collection(db, "dict"), {
+    //추가할 데이터
+    //   word: "new",
+    //   isClicked: "false"
+    // })
+
+    // 콜렉션 > docs 순으로 접근해야
+    // 콜렉션 불러오기 : collection(db, "dict")
+    // docs 불러오기
+    // const query = await getDocs(collection(db, "dict"));
+    // console.log(query);
+    // // 객체 
+    // query.forEach((doc) => {
+    //   console.log(doc.id, doc.data());
+    // });
+  // }, []);
 
   return (
     <div style={{ color: "dimgray", textAlign: "center", height: "800px" }}>
@@ -45,7 +69,6 @@ const Add = () => {
         <Contents>
           {/* !!!!게시글 목록 파이어스토어에 저장하기!!!! */}
           <h3>단어 <InputBox ref={wordInput} /></h3>
-          <h3>발음 <InputBox ref={announceInput} /></h3>
           <h3>의미 <InputBox ref={meaningInput} /> </h3>
           <h3>예문 <InputBox ref={exInput} /></h3>
           {/* <input>태그 사용시 value속성이 고정값이 아니라 나는 에러 발생(onChange handeler 어쩌구)

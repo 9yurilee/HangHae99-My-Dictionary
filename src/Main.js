@@ -1,20 +1,24 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
-import styled from 'styled-components';
+import { loadCardFB } from "./Store"
 
+import styled from 'styled-components';
 import { BsCheckCircle } from 'react-icons/bs';
 import { AiOutlineDelete } from 'react-icons/ai';
 import { IoIosAddCircle } from 'react-icons/io';
 
+//파이어베이스 삭제용
+import {db} from "./firebase"
+import { doc, deleteDoc } from "firebase/firestore"
+
+
 const Main = () => {
   const history = useHistory();
+  const dispatch = useDispatch();
 
   const list = useSelector((state) => state.list);
-  //버킷 모듈에 있는 리스트값..??
-  console.log(list);
-  // 들어온다!
 
   const [color, setColor] = React.useState('white');
   const [icolor, setIcolor] = React.useState('dimgray');
@@ -37,6 +41,11 @@ const Main = () => {
       console.log('reload')
     );
   }
+  React.useEffect(() => {
+    dispatch(loadCardFB());
+    // const docRef = doc(db, "dict", "WaBUMIGgvjXvz0padprW");
+    // deleteDoc(docRef)
+  }, []);
 
   return (
     <div
@@ -79,12 +88,7 @@ const Main = () => {
             return (
               <div key={i} style={{ width: '100%', display: 'flex' }}>
                 <WordCard color={color}>
-                  <h2>
-                    {a.word}{' '}
-                    <span style={{ fontSize: 'medium', fontWeight: 'lighter' }}>
-                      [{a.announce}]
-                    </span>
-                  </h2>
+                  <h2>{a.word}</h2>
                   <p>{a.meaning}</p>
                   <p style={{ color: 'blue' }}>{a.example}</p>
 
@@ -103,12 +107,10 @@ const Main = () => {
           })}
         </div>
       </div>
-      <CircleButton
-        onClick={() => {
+      <CircleButton>
+        <IoIosAddCircle size={50} onClick={() => {
           history.push('/add');
-        }}
-      >
-        <IoIosAddCircle size={50} />
+        }} />
       </CircleButton>
       {/* 나는 로테이션 시키면 동그라미 자체가 오른쪽으로 이동하는 느낌인데, 샘플은 +만 도는 느낌.
           나도 동그라미를 주고 안에 +만 넣어서 로테이션 시켜볼까 */}
@@ -121,8 +123,9 @@ const CircleButton = styled.div`
   right: 30px;
   bottom: 30px;
   cursor: pointer;
-  transition: 0.2s;
+  
   &:hover {
+    transition: 0.4s ease-in-out;
     transform: rotate(90deg);
     /* animation: backwards; */
     /* transform-origin: 50% 45% */

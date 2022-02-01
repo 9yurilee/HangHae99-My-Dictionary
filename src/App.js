@@ -4,7 +4,6 @@ import { Route } from 'react-router-dom';
 import Add from './Add';
 import Main from './Main';
 
-
 function App() {
   return (
     <div>
