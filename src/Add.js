@@ -18,51 +18,17 @@ const Add = () => {
         word: wordInput.current.value,
         meaning: meaningInput.current.value,
         example: exInput.current.value,
+        
       }))
     history.push('/')
   }
-
-  // db 연결 확인 콘솔
-  // promise로 넘어오는거 확인 방법 : async, await (= set!!)
-  // async ? 
-  // React.useEffect(() => {
-  //   dispatch(loadCardFB());
-
-    // 새로운 컬렉션에 추가
-    // addDoc(collection(db, "dicts"), {word: "newnew", isClicked: false});
-
-    //삭제하기
-    // const docRef = doc(db, "dict", "Ver6UFZhIf2U0LK8zjOd");
-    // deleteDoc(docRef);
-
-    //수정하기
-    // const docRef = doc(db, "dict", "HF36l88oFXadtIotEpqb");
-    // updateDoc(docRef, {isClicked: true});
-
-    //추가하기
-    // addDoc(collection(db, "dict"), {
-    //추가할 데이터
-    //   word: "new",
-    //   isClicked: "false"
-    // })
-
-    // 콜렉션 > docs 순으로 접근해야
-    // 콜렉션 불러오기 : collection(db, "dict")
-    // docs 불러오기
-    // const query = await getDocs(collection(db, "dict"));
-    // console.log(query);
-    // // 객체 
-    // query.forEach((doc) => {
-    //   console.log(doc.id, doc.data());
-    // });
-  // }, []);
-
+   
   return (
     <div style={{ color: "dimgray", textAlign: "center", height: "800px" }}>
       <h1
         style={{ cursor: "pointer", display: "grid", margin: "15px auto", width: "100%" }}
         onClick={() => history.push('/')}
-      >📚우리말 단어장📚</h1>
+      >📚영어 단어장📚</h1>
       <hr />
       <h3 style={{ margin: "30px" }} >단어 추가하기</h3>
       <Container>

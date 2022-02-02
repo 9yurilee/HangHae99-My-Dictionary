@@ -11,27 +11,13 @@ import { IoIosAddCircle } from 'react-icons/io';
 
 //파이어베이스 삭제용
 import {db} from "./firebase"
-import { doc, deleteDoc } from "firebase/firestore"
-
+import { addDoc, doc, deleteDoc  } from "firebase/firestore"
 
 const Main = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
   const list = useSelector((state) => state.list);
-
-  const [color, setColor] = React.useState('white');
-  const [icolor, setIcolor] = React.useState('dimgray');
-
-  function onClick() {
-    color === '#ddd' ? setColor('white') : setColor('#ddd');
-    console.log('checkBtnClick');
-    //function으로 해도 되긴 된다.
-    icolor === 'white' ? setIcolor('dimgray') : setIcolor('white');
-    //아이콘 변경으로 할 수 있는 방법은? 좋아요 토글버튼?
-    //클릭 여부에 따라 카드 개별로 색깔 변경하게끔(isclicked)
-    console.log('checked');
-  }
 
   function deleteBtn() {
     return (
@@ -45,6 +31,7 @@ const Main = () => {
     dispatch(loadCardFB());
     // const docRef = doc(db, "dict", "WaBUMIGgvjXvz0padprW");
     // deleteDoc(docRef)
+    addDoc(collection(db, "dicts"), {word: "개인공부용", meaning: "의미", example: "예문", exmean: "예문의미", isClicked: false});
   }, []);
 
   return (
@@ -71,7 +58,7 @@ const Main = () => {
           style={{ cursor: 'pointer', display: 'grid', margin: '15px auto' }}
           onClick={() => window.location.reload()}
         >
-          📚우리말 단어장📚
+          📚영어 단어장📚
         </h1>
       </div>
       <div style={{ marginTop: '70px', height: '100%' }}>
@@ -93,8 +80,6 @@ const Main = () => {
                   <p style={{ color: 'blue' }}>{a.example}</p>
 
                   <div style={{ float: 'right', cursor: 'pointer' }}>
-                    <BsCheckCircle onClick={onClick} size={20} color={icolor} />
-                    {/* color는 ㄹㅇ 색상. {위에서 선언한 변수 내지 받아오는 값!!} */}
                     <AiOutlineDelete
                       size={20}
                       style={{ marginLeft: '5px' }}
@@ -118,21 +103,6 @@ const Main = () => {
   );
 };
 
-const CircleButton = styled.div`
-  position: fixed;
-  right: 30px;
-  bottom: 30px;
-  cursor: pointer;
-  
-  &:hover {
-    transition: 0.4s ease-in-out;
-    transform: rotate(90deg);
-    /* animation: backwards; */
-    /* transform-origin: 50% 45% */
-  }
-`;
-
-export default Main;
 
 const WordCard = styled.div`
   min-width: 250px;
@@ -151,6 +121,20 @@ const WordCard = styled.div`
     -o-transform: scale(1.05);
     transform: scale(1.05);
   }
-  background-color: ${(props) => props.color};
 `;
-// 아예 바깥으로 빠져나와야 리렌더링 안되고 색깔 변경 일어난다
+
+const CircleButton = styled.div`
+  position: fixed;
+  right: 30px;
+  bottom: 30px;
+  cursor: pointer;
+  
+  &:hover {
+    transition: 0.4s ease-in-out;
+    transform: rotate(90deg);
+    /* animation: backwards; */
+    /* transform-origin: 50% 45% */
+  }
+`;
+
+export default Main;
