@@ -5,13 +5,12 @@ import { useHistory } from 'react-router-dom';
 import { loadCardFB } from "./Store"
 
 import styled from 'styled-components';
-import { BsCheckCircle } from 'react-icons/bs';
-import { AiOutlineDelete } from 'react-icons/ai';
 import { IoIosAddCircle } from 'react-icons/io';
 
 //파이어베이스 삭제용
 import {db} from "./firebase"
-import { addDoc, doc, deleteDoc  } from "firebase/firestore"
+import { collection, addDoc, doc, deleteDoc } from "firebase/firestore"
+
 
 const Main = () => {
   const history = useHistory();
@@ -29,39 +28,21 @@ const Main = () => {
   }
   React.useEffect(() => {
     dispatch(loadCardFB());
-    // const docRef = doc(db, "dict", "WaBUMIGgvjXvz0padprW");
-    // deleteDoc(docRef)
-    addDoc(collection(db, "dicts"), {word: "개인공부용", meaning: "의미", example: "예문", exmean: "예문의미", isClicked: false});
+    const docRef = doc(db, "dict", "2hhedxF7hZsedWDNKR67");
+    deleteDoc(docRef)
   }, []);
 
   return (
-    <div
-      style={{
-        color: 'dimgray',
-        textAlign: 'center',
-        height: '100vh',
-        width: '100%',
-      }}
-    >
-      <div
-        style={{
-          position: 'fixed',
-          backgroundColor: '#fff',
-          top: '0',
-          left: '0',
-          width: '100%',
-          height: '60px',
-          borderBottom: '1px solid #eee',
-        }}
-      >
+    <div style={{textAlign: 'center', width: '100%'}}>
+      <Header>
         <h1
-          style={{ cursor: 'pointer', display: 'grid', margin: '15px auto' }}
+          style={{ cursor: 'pointer', display: 'grid', textAlign: 'center', margin: '30px auto', background: '#fff'}}
           onClick={() => window.location.reload()}
         >
-          📚영어 단어장📚
+          📚우리말 단어장📚
         </h1>
-      </div>
-      <div style={{ marginTop: '70px', height: '100%' }}>
+      </Header>
+      <div style={{ marginTop: '130px', height: '100%' }}>
         <h3>단어 목록</h3>
         <div
           style={{
@@ -74,18 +55,12 @@ const Main = () => {
           {list.map((a, i) => {
             return (
               <div key={i} style={{ width: '100%', display: 'flex' }}>
-                <WordCard color={color}>
-                  <h2>{a.word}</h2>
+                {/* whiteSpace: 'nowrap',
+                textCverflow: 'ellipsis', wordBreak: 'break-all' */}
+                <WordCard>
+                  <h2 style={{}}>{a.word}</h2>
                   <p>{a.meaning}</p>
-                  <p style={{ color: 'blue' }}>{a.example}</p>
-
-                  <div style={{ float: 'right', cursor: 'pointer' }}>
-                    <AiOutlineDelete
-                      size={20}
-                      style={{ marginLeft: '5px' }}
-                      onClick={deleteBtn}
-                    />
-                  </div>
+                  <p style={{ color: '#0455BF' }}>{a.example}</p>
                 </WordCard>
               </div>
             );
@@ -103,11 +78,27 @@ const Main = () => {
   );
 };
 
+const Header = styled.div`
+  position: fixed;
+  background-color: #fff;
+  top: 0%;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  border-bottom: 1px solid #eee;
+  z-index: 999;
+`;
 
 const WordCard = styled.div`
-  min-width: 250px;
+  font-size: 20px;
   width: 250px;
+  height: 320px;
   text-align: left;
+  width: 250px;
+  /* overflow: hidden; 
+  white-space: nowrap;
+  text-overflow:ellipsis;
+  word-break: break-all; */
   margin: 10px 20px;
   padding: 15px 15px;
   border: solid #eee 2px;
@@ -132,8 +123,6 @@ const CircleButton = styled.div`
   &:hover {
     transition: 0.4s ease-in-out;
     transform: rotate(90deg);
-    /* animation: backwards; */
-    /* transform-origin: 50% 45% */
   }
 `;
 
